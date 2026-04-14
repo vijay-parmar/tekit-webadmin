@@ -1,0 +1,305 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TekIt Admin API",
+    "description": "API documentation for the TekIt Admin Panel backend.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "example": "admin@tekit.com" },
+          "password": { "type": "string", "example": "Admin@12345" }
+        }
+      },
+      "CategoryRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "example": "Technology" },
+          "description": { "type": "string", "example": "Tech articles" }
+        }
+      },
+      "BlogRequest": {
+        "type": "object",
+        "required": ["title", "author", "date", "content"],
+        "properties": {
+          "title": { "type": "string", "example": "New Blog Post" },
+          "category_id": { "type": "integer", "example": 1 },
+          "author": { "type": "string", "example": "John Doe" },
+          "date": { "type": "string", "format": "date", "example": "2024-01-20" },
+          "featured_image_url": { "type": "string", "example": "https://example.com/img.jpg" },
+          "summary": { "type": "string", "example": "Short summary." },
+          "content": { "type": "string", "example": "<p>Content</p>" },
+          "status": { "type": "string", "enum": ["draft", "published", "archived"], "example": "published" }
+        }
+      },
+      "JobRequest": {
+        "type": "object",
+        "required": ["title", "description"],
+        "properties": {
+          "title": { "type": "string", "example": "Senior Node.js Developer" },
+          "experience": { "type": "string", "example": "3-5 years" },
+          "location": { "type": "string", "example": "Remote" },
+          "notice_period": { "type": "string", "example": "30 days" },
+          "job_type": { "type": "string", "enum": ["full-time", "part-time", "remote", "contract", "internship"], "example": "full-time" },
+          "description": { "type": "string", "example": "<p>Job details</p>" },
+          "mandatory_skills": { "type": "array", "items": { "type": "string" }, "example": ["Node.js", "Express"] },
+          "good_to_have_skills": { "type": "array", "items": { "type": "string" }, "example": ["AWS"] },
+          "responsibilities": { "type": "array", "items": { "type": "string" }, "example": ["Write code"] },
+          "benefits": { "type": "array", "items": { "type": "string" }, "example": ["Health care"] },
+          "status": { "type": "string", "enum": ["active", "closed", "draft"], "example": "active" }
+        }
+      },
+      "UserRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": { "type": "string", "example": "New Admin" },
+          "email": { "type": "string", "example": "admin2@tekit.com" },
+          "password": { "type": "string", "example": "Secure@123" },
+          "role": { "type": "string", "enum": ["super_admin", "admin"], "example": "admin" },
+          "permissions": {
+            "type": "object",
+            "properties": {
+              "blogs": {
+                "type": "object",
+                "properties": { "view": { "type": "boolean" }, "create": { "type": "boolean" }, "edit": { "type": "boolean" }, "delete": { "type": "boolean" } }
+              },
+              "jobs": {
+                "type": "object",
+                "properties": { "view": { "type": "boolean" }, "create": { "type": "boolean" }, "edit": { "type": "boolean" }, "delete": { "type": "boolean" } }
+              }
+            }
+          },
+          "status": { "type": "string", "enum": ["active", "inactive"], "example": "active" }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/admin/login": {
+      "post": {
+        "summary": "Admin Login",
+        "tags": ["Auth"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Login successful" }
+        }
+      }
+    },
+    "/admin/logout": {
+      "post": {
+        "summary": "Admin Logout",
+        "tags": ["Auth"],
+        "responses": { "200": { "description": "Logout successful" } }
+      }
+    },
+    "/admin/me": {
+      "get": {
+        "summary": "Get Current User Profile",
+        "tags": ["Auth"],
+        "responses": { "200": { "description": "Profile fetched" } }
+      }
+    },
+    "/dashboard/stats": {
+      "get": {
+        "summary": "Get Dashboard Stats",
+        "tags": ["Dashboard"],
+        "responses": { "200": { "description": "Stats fetched" } }
+      }
+    },
+    "/dashboard/recent-blogs": {
+      "get": {
+        "summary": "Get Recent Blogs",
+        "tags": ["Dashboard"],
+        "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Recent blogs fetched" } }
+      }
+    },
+    "/dashboard/recent-jobs": {
+      "get": {
+        "summary": "Get Recent Jobs",
+        "tags": ["Dashboard"],
+        "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Recent jobs fetched" } }
+      }
+    },
+    "/blogs": {
+      "get": {
+        "summary": "List Blogs",
+        "tags": ["Blogs"],
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          { "name": "category_id", "in": "query", "schema": { "type": "integer" } },
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["draft", "published", "archived"] } }
+        ],
+        "responses": { "200": { "description": "Blogs fetched" } }
+      },
+      "post": {
+        "summary": "Create Blog",
+        "tags": ["Blogs"],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BlogRequest" } } } },
+        "responses": { "201": { "description": "Blog post created" } }
+      }
+    },
+    "/blogs/{id}": {
+      "get": {
+        "summary": "Get Blog by ID",
+        "tags": ["Blogs"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Blog fetched" } }
+      },
+      "put": {
+        "summary": "Update Blog",
+        "tags": ["Blogs"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BlogRequest" } } } },
+        "responses": { "200": { "description": "Blog updated" } }
+      },
+      "delete": {
+        "summary": "Delete Blog",
+        "tags": ["Blogs"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Blog deleted" } }
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "List Categories",
+        "tags": ["Categories"],
+        "responses": { "200": { "description": "Categories fetched" } }
+      },
+      "post": {
+        "summary": "Create Category",
+        "tags": ["Categories"],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } } } },
+        "responses": { "201": { "description": "Category created" } }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "summary": "Get Category by ID",
+        "tags": ["Categories"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Category fetched" } }
+      },
+      "put": {
+        "summary": "Update Category",
+        "tags": ["Categories"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } } } },
+        "responses": { "200": { "description": "Category updated" } }
+      },
+      "delete": {
+        "summary": "Delete Category",
+        "tags": ["Categories"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Category deleted" } }
+      }
+    },
+    "/jobs": {
+      "get": {
+        "summary": "List Jobs",
+        "tags": ["Jobs"],
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          { "name": "location", "in": "query", "schema": { "type": "string" } },
+          { "name": "job_type", "in": "query", "schema": { "type": "string", "enum": ["full-time", "part-time", "remote", "contract", "internship"] } },
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["active", "closed", "draft"] } }
+        ],
+        "responses": { "200": { "description": "Jobs fetched" } }
+      },
+      "post": {
+        "summary": "Create Job Post",
+        "tags": ["Jobs"],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/JobRequest" } } } },
+        "responses": { "201": { "description": "Job created" } }
+      }
+    },
+    "/jobs/{id}": {
+      "get": {
+        "summary": "Get Job by ID",
+        "tags": ["Jobs"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Job fetched" } }
+      },
+      "put": {
+        "summary": "Update Job Post",
+        "tags": ["Jobs"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/JobRequest" } } } },
+        "responses": { "200": { "description": "Job updated" } }
+      },
+      "delete": {
+        "summary": "Delete Job Post",
+        "tags": ["Jobs"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Job deleted" } }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List Admin Users (Super Admin Only)",
+        "tags": ["Users"],
+        "responses": { "200": { "description": "Users fetched" } }
+      },
+      "post": {
+        "summary": "Create Admin User (Super Admin Only)",
+        "tags": ["Users"],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserRequest" } } } },
+        "responses": { "201": { "description": "User created" } }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get Admin User by ID",
+        "tags": ["Users"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "User fetched" } }
+      },
+      "put": {
+        "summary": "Update Admin User",
+        "tags": ["Users"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserRequest" } } } },
+        "responses": { "200": { "description": "User updated" } }
+      },
+      "delete": {
+        "summary": "Delete Admin User",
+        "tags": ["Users"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "User deleted" } }
+      }
+    }
+  }
+}
