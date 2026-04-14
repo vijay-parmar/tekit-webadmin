@@ -12,15 +12,18 @@ const errorHandler = require('./middlewares/errorHandler');
 const apiRoutes = require('./routes');
 const logger = require('./utils/logger');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./docs/swagger.json');
+//const swaggerDocument = require('./docs/swagger.json');
 
+const path = require('path');
+
+const swaggerDocument = require(path.join(__dirname, 'docs', 'swagger.json'));
 const app = express();
 
 // ─── Security Middleware ──────────────────────────────────────────────────────
 
 // Set security-related HTTP headers
 app.use(helmet());
-
+app.set('trust proxy', false);
 // CORS — allow configured origins
 app.use(
   cors({
@@ -73,7 +76,11 @@ app.use(requestLogger);
 
 // ─── API Documentation ────────────────────────────────────────────────────────
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+  swaggerOptions: {
+    url: "http://52.86.158.16:5000/api-docs/swagger.json"
+  }
+}));
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 
