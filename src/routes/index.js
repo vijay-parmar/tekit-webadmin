@@ -11,6 +11,7 @@ const blogRoutes = require('./blog.routes');
 const categoryRoutes = require('./category.routes');
 const jobRoutes = require('./job.routes');
 const userRoutes = require('./user.routes');
+const publicRoutes = require('./public.routes');
 
 // Mount route modules
 router.use('/admin', authRoutes);
@@ -19,5 +20,6 @@ router.use('/blogs', blogRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/jobs', jobRoutes);
 router.use('/users', userRoutes);
+router.use('/public', publicRoutes);
 
 module.exports = router;
