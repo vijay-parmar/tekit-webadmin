@@ -18,9 +18,19 @@ router.get(
 );
 
 router.get(
+  '/blogs/:id',
+  publicController.getPublicBlog
+);
+
+router.get(
   '/jobs',
   validate(listJobSchema, 'query'),
   publicController.listPublicJobs
+);
+
+router.get(
+  '/jobs/:id',
+  publicController.getPublicJob
 );
 
 module.exports = router;

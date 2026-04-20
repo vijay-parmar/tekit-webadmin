@@ -28,7 +28,35 @@ const listPublicJobs = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/public/blogs/:id
+ * Publicly get a single blog
+ */
+const getPublicBlog = async (req, res, next) => {
+  try {
+    const blog = await blogService.getBlogById(req.params.id);
+    return successResponse(res, 'Blog fetched.', blog);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * GET /api/public/jobs/:id
+ * Publicly get a single job
+ */
+const getPublicJob = async (req, res, next) => {
+  try {
+    const job = await jobService.getJobById(req.params.id);
+    return successResponse(res, 'Job fetched.', job);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   listPublicBlogs,
+  getPublicBlog,
   listPublicJobs,
+  getPublicJob,
 };
