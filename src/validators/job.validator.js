@@ -20,6 +20,7 @@ const createJobSchema = Joi.object({
   responsibilities: skillsArray,
   benefits: skillsArray,
   status: Joi.string().valid('active', 'closed', 'draft').default('active'),
+  vacancy: Joi.string().max(100).allow('', null).optional(),
 });
 
 const updateJobSchema = Joi.object({
@@ -36,6 +37,7 @@ const updateJobSchema = Joi.object({
   responsibilities: skillsArray.optional(),
   benefits: skillsArray.optional(),
   status: Joi.string().valid('active', 'closed', 'draft').optional(),
+  vacancy: Joi.string().max(100).allow('', null).optional(),
 }).min(1);
 
 const listJobSchema = Joi.object({

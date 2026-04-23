@@ -41,6 +41,10 @@ const Job = sequelize.define(
       type: DataTypes.TEXT('long'),
       allowNull: false,
     },
+    vacancy: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
     /** JSON array of mandatory skill strings */
     mandatory_skills: {
       type: DataTypes.JSON,
