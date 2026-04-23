@@ -33,7 +33,7 @@ const Job = sequelize.define(
       comment: 'e.g. "Immediate", "30 days", "60 days"',
     },
     job_type: {
-      type: DataTypes.ENUM('full-time', 'part-time', 'remote', 'contract', 'internship'),
+      type: DataTypes.STRING(100),
       allowNull: false,
       defaultValue: 'full-time',
     },

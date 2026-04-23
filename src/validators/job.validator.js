@@ -4,16 +4,14 @@
  */
 const Joi = require('joi');
 
-const skillsArray = Joi.array().items(Joi.string().trim().max(100)).default([]);
+const skillsArray = Joi.array().items(Joi.string().trim()).default([]);
 
 const createJobSchema = Joi.object({
   title: Joi.string().min(3).max(255).required(),
   experience: Joi.string().max(100).allow('', null).optional(),
   location: Joi.string().max(150).allow('', null).optional(),
   notice_period: Joi.string().max(100).allow('', null).optional(),
-  job_type: Joi.string()
-    .valid('full-time', 'part-time', 'remote', 'contract', 'internship')
-    .default('full-time'),
+  job_type: Joi.string().max(100).default('full-time'),
   description: Joi.string().min(10).required(),
   mandatory_skills: skillsArray,
   good_to_have_skills: skillsArray,
@@ -28,9 +26,7 @@ const updateJobSchema = Joi.object({
   experience: Joi.string().max(100).allow('', null).optional(),
   location: Joi.string().max(150).allow('', null).optional(),
   notice_period: Joi.string().max(100).allow('', null).optional(),
-  job_type: Joi.string()
-    .valid('full-time', 'part-time', 'remote', 'contract', 'internship')
-    .optional(),
+  job_type: Joi.string().max(100).optional(),
   description: Joi.string().min(10).optional(),
   mandatory_skills: skillsArray.optional(),
   good_to_have_skills: skillsArray.optional(),
@@ -45,9 +41,7 @@ const listJobSchema = Joi.object({
   limit: Joi.number().integer().positive().max(100).default(10),
   search: Joi.string().trim().max(255).allow('').optional(),
   location: Joi.string().max(150).allow('').optional(),
-  job_type: Joi.string()
-    .valid('full-time', 'part-time', 'remote', 'contract', 'internship')
-    .optional(),
+  job_type: Joi.string().max(100).optional(),
   status: Joi.string().valid('active', 'closed', 'draft').optional(),
 });
 
