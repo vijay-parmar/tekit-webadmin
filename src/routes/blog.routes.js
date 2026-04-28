@@ -21,6 +21,7 @@ const blogController = require('../controllers/blog.controller');
 const authenticate = require('../middlewares/authenticate');
 const { requirePermission } = require('../middlewares/authorize');
 const validate = require('../middlewares/validate');
+const upload = require('../middlewares/upload');
 const {
   createBlogSchema,
   updateBlogSchema,
@@ -52,6 +53,7 @@ router.get(
 router.post(
   '/',
   requirePermission('blogs', 'create'),
+  upload.single('featured_image_url'),
   validate(createBlogSchema),
   blogController.createBlog
 );
@@ -59,6 +61,7 @@ router.post(
 router.put(
   '/:id',
   requirePermission('blogs', 'edit'),
+  upload.single('featured_image_url'),
   validate(updateBlogSchema),
   blogController.updateBlog
 );

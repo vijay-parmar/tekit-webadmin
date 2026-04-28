@@ -35,6 +35,9 @@ const getBlog = async (req, res, next) => {
  */
 const createBlog = async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.featured_image_url = `/public/uploads/${req.file.filename}`;
+    }
     const blog = await blogService.createBlog(req.body, req.user.id);
     return successResponse(res, 'Blog post created successfully.', blog, 201);
   } catch (error) {
@@ -47,6 +50,9 @@ const createBlog = async (req, res, next) => {
  */
 const updateBlog = async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.featured_image_url = `/public/uploads/${req.file.filename}`;
+    }
     const blog = await blogService.updateBlog(req.params.id, req.body, req.user.id);
     return successResponse(res, 'Blog post updated successfully.', blog);
   } catch (error) {
