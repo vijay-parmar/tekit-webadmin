@@ -53,7 +53,7 @@ router.get(
 router.post(
   '/',
   requirePermission('blogs', 'create'),
-  upload.single('featured_image_url'),
+  upload.single('featured_image'),
   validate(createBlogSchema),
   blogController.createBlog
 );
@@ -61,7 +61,7 @@ router.post(
 router.put(
   '/:id',
   requirePermission('blogs', 'edit'),
-  upload.single('featured_image_url'),
+  upload.single('featured_image'),
   validate(updateBlogSchema),
   blogController.updateBlog
 );

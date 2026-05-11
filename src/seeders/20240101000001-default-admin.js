@@ -14,7 +14,7 @@ module.exports = {
     await queryInterface.bulkInsert('users', [
       {
         name: 'Super Admin',
-        email: 'admin@tekit.com',
+        email: 'Prachi.agrawal@tekitsolution.com',
         password: passwordHash,
         role: 'super_admin',
         permissions: JSON.stringify({
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.bulkDelete('users', { email: 'admin@tekit.com' });
+    await queryInterface.bulkDelete('users', { email: 'Prachi.agrawal@tekitsolution.com' });
     await queryInterface.bulkDelete('categories', {
       slug: ['technology', 'design', 'engineering', 'career'],
     });

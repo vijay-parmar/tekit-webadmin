@@ -45,6 +45,10 @@ const Job = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: true,
     },
+    comment: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+    },
     /** JSON array of mandatory skill strings */
     mandatory_skills: {
       type: DataTypes.JSON,
@@ -70,7 +74,7 @@ const Job = sequelize.define(
       defaultValue: [],
     },
     status: {
-      type: DataTypes.ENUM('active', 'closed', 'draft'),
+      type: DataTypes.ENUM('active', 'inactive', 'on hold'),
       allowNull: false,
       defaultValue: 'active',
     },

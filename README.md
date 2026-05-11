@@ -46,7 +46,7 @@ npm run dev
 **Default credentials (after seed):**
 
 ```
-Email:    admin@tekit.com
+Email:    Prachi.agrawal@tekitsolution.com
 Password: Admin@12345
 Role:     super_admin
 ```
@@ -165,7 +165,7 @@ Public endpoint.
 **Request body:**
 ```json
 {
-  "email": "admin@tekit.com",
+  "email": "Prachi.agrawal@tekitsolution.com",
   "password": "Admin@12345"
 }
 ```
@@ -179,7 +179,7 @@ Public endpoint.
     "user": {
       "id": 1,
       "name": "Super Admin",
-      "email": "admin@tekit.com",
+      "email": "Prachi.agrawal@tekitsolution.com",
       "role": "super_admin",
       "permissions": {
         "blogs": { "view": true, "create": true, "edit": true, "delete": true },
@@ -218,7 +218,7 @@ Returns the currently authenticated user's profile.
   "data": {
     "id": 1,
     "name": "Super Admin",
-    "email": "admin@tekit.com",
+    "email": "Prachi.agrawal@tekitsolution.com",
     "role": "super_admin",
     "status": "active",
     "lastLoginAt": "2024-01-15T08:30:00.000Z"

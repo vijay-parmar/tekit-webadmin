@@ -24,7 +24,7 @@
 "type": "object",
 "required": ["email", "password"],
 "properties": {
-"email": { "type": "string", "example": "[admin@tekit.com](mailto:admin@tekit.com)" },
+"email": { "type": "string", "example": "[Prachi.agrawal@tekitsolution.com](mailto:Prachi.agrawal@tekitsolution.com)" },
 "password": { "type": "string", "example": "Admin@12345" }
 }
 },

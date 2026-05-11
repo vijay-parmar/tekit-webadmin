@@ -17,8 +17,9 @@ const createJobSchema = Joi.object({
   good_to_have_skills: skillsArray,
   responsibilities: skillsArray,
   benefits: skillsArray,
-  status: Joi.string().valid('active', 'closed', 'draft').default('active'),
+  status: Joi.string().valid('active', 'inactive', 'on hold').default('active'),
   vacancy: Joi.string().max(100).allow('', null).optional(),
+  comment: Joi.string().max(500).allow('', null).optional(),
 });
 
 const updateJobSchema = Joi.object({
@@ -32,8 +33,9 @@ const updateJobSchema = Joi.object({
   good_to_have_skills: skillsArray.optional(),
   responsibilities: skillsArray.optional(),
   benefits: skillsArray.optional(),
-  status: Joi.string().valid('active', 'closed', 'draft').optional(),
+  status: Joi.string().valid('active', 'inactive', 'on hold').optional(),
   vacancy: Joi.string().max(100).allow('', null).optional(),
+  comment: Joi.string().max(500).allow('', null).optional(),
 }).min(1);
 
 const listJobSchema = Joi.object({
@@ -42,7 +44,7 @@ const listJobSchema = Joi.object({
   search: Joi.string().trim().max(255).allow('').optional(),
   location: Joi.string().max(150).allow('').optional(),
   job_type: Joi.string().max(100).optional(),
-  status: Joi.string().valid('active', 'closed', 'draft').optional(),
+  status: Joi.string().valid('active', 'inactive', 'on hold').optional(),
 });
 
 module.exports = { createJobSchema, updateJobSchema, listJobSchema };
